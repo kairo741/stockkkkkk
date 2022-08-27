@@ -4,12 +4,12 @@ import 'package:stockkkkkk/domain/port/primary/stock_port.dart';
 
 class StockServiceImpl extends StockPort {
   @override
-  List<StockDTO> getStock() {
+  Future<List<StockDTO>> getStock() async {
     return [StockDTO(1, "name", 1)];
   }
 
   @override
-  StockDTO updateStock(Stock stock) {
+  Future<StockDTO> updateStock(Stock stock) async {
     return StockDTO(2, "name", 1);
   }
 }
