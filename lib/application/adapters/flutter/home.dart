@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// import 'package:stockkkkkk/application/adapters/flutter/create.dart';
+
 import 'package:stockkkkkk/domain/adapters/service/stock_service_impl.dart';
 import 'package:stockkkkkk/domain/dto/stockDTO.dart';
 
@@ -30,8 +30,10 @@ class _HomePageState extends State<HomePage> {
         actions: [
           TextButton(
               onPressed: () {
-                _stockService.save(StockDTO(null, name, 1));
-                Navigator.pop(context);
+                setState(() {
+                  _stockService.save(StockDTO(null, name, 1));
+                  Navigator.pop(context);
+                });
               },
               child: Text('Cadastrar'))
         ],
