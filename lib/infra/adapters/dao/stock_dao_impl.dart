@@ -1,8 +1,8 @@
 import 'package:sqflite/sqflite.dart';
+import 'package:stockkkkkk/infra/adapters/dao/interfaces/stock_dao.dart';
 import 'package:stockkkkkk/infra/adapters/models/stock_model.dart';
 
 import '../../configuration/connection.dart';
-import '../interfaces/stock_dao.dart';
 
 class StockDAOImpl implements StockDAO {
   Database? _db;

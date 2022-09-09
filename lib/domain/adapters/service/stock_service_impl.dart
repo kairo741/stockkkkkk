@@ -1,7 +1,7 @@
 import 'package:stockkkkkk/domain/dto/stockDTO.dart';
 import 'package:stockkkkkk/domain/entity/stock.dart';
 import 'package:stockkkkkk/domain/port/service/stock_service_port.dart';
-import 'package:stockkkkkk/infra/adapters/services/stock_model_service.dart';
+import 'package:stockkkkkk/infra/adapters/dao/services/stock_model_service.dart';
 
 class StockServiceImpl extends StockServicePort {
   final StockModelServiceImpl _stockModelService = StockModelServiceImpl();
