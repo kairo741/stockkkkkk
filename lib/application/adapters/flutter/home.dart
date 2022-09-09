@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// import 'package:stockkkkkk/application/adapters/flutter/create.dart';
 import 'package:stockkkkkk/domain/adapters/service/stock_service_impl.dart';
 import 'package:stockkkkkk/domain/dto/stockDTO.dart';
 
@@ -14,6 +13,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final StockServiceImpl _stockService = StockServiceImpl();
+
+  final snackBar = SnackBar(
+    content: Text('O Produto não pode ser negativo!!!'),
+  );
 
   registerPopUp() {
     var name = "";
@@ -30,8 +33,10 @@ class _HomePageState extends State<HomePage> {
         actions: [
           TextButton(
               onPressed: () {
-                _stockService.save(StockDTO(null, name, 1));
-                Navigator.pop(context);
+                setState(() {
+                  _stockService.save(StockDTO(null, name, 1));
+                  Navigator.pop(context);
+                });
               },
               child: Text('Cadastrar'))
         ],
@@ -67,12 +72,38 @@ class _HomePageState extends State<HomePage> {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const IconButton(onPressed: null, icon: Icon(Icons.add)),
+                      IconButton(
+                        onPressed: () {
+                          setState(
+                            () {
+                              data[index].quantity = data[index].quantity! + 1;
+                              _stockService.save(data[index]);
+                            },
+                          );
+                        },
+                        icon: Icon(Icons.add),
+                      ),
                       Text(
                         data[index].quantity.toString(),
                         style: Theme.of(context).textTheme.headline4,
                       ),
-                      const IconButton(onPressed: null, icon: Icon(Icons.remove))
+                      IconButton(
+                        onPressed: () {
+                          setState(
+                            () {
+                              if (data[index].quantity! > 0) {
+                                data[index].quantity =
+                                    data[index].quantity! - 1;
+                                _stockService.save(data[index]);
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              }
+                            },
+                          );
+                        },
+                        icon: Icon(Icons.remove),
+                      ),
                     ],
                   ),
                 ),
