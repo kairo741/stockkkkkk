@@ -1,20 +1,23 @@
+import 'package:get_it/get_it.dart';
 import 'package:stockkkkkk/domain/dto/stockDTO.dart';
 import 'package:stockkkkkk/domain/entity/stock.dart';
-import 'package:stockkkkkk/domain/port/service/stock_service_port.dart';
-import 'package:stockkkkkk/infra/adapters/dao/services/stock_model_service.dart';
+import 'package:stockkkkkk/domain/port/service/primary_port.dart';
+import 'package:stockkkkkk/domain/port/service/secundary_port.dart';
 
-class StockServiceImpl extends StockServicePort {
-  final StockModelServiceImpl _stockModelService = StockModelServiceImpl();
+class StockServiceImpl {
+  final primaryPort = GetIt.I.get<ServicePrimaryPort>();
+  final secundaryPort = GetIt.I.get<ServiceSecundaryPort>();
 
-  @override
   Future<List<StockDTO>> findAll() async {
-    List<Stock> stockList = await _stockModelService.findAll();
-    return stockList.map((e) => StockDTO.fromStock(e)).toList();
+    List<StockDTO> stockList = await primaryPort.findAll();
+    return stockList;
+    // return stockList.map((e) => StockDTO.fromStock(e)).toList();
   }
 
-  @override
-  save(StockDTO dto) {
-    Stock entity = Stock(dto.id, dto.name!, dto.quantity!);
-    _stockModelService.save(entity);
+  save(StockDTO dto, int quantity) {
+    var entity = Stock(dto.id, dto.name!, dto.quantity!);
+    entity.updateStock(quantity);
+    dto.quantity = quantity;
+    secundaryPort.save(dto);
   }
 }

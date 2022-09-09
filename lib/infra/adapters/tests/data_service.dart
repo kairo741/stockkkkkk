@@ -1,10 +1,11 @@
 import 'package:stockkkkkk/domain/dto/stockDTO.dart';
-import 'package:stockkkkkk/domain/entity/stock.dart';
-import 'package:stockkkkkk/domain/port/service/stock_service_port.dart';
+import 'package:stockkkkkk/domain/port/service/primary_port.dart';
+import 'package:stockkkkkk/domain/port/service/secundary_port.dart';
+import 'package:stockkkkkk/infra/adapters/models/stock_model.dart';
 
 import 'data_store.dart';
 
-class DataService implements StockServicePort {
+class DataService implements ServicePrimaryPort, ServiceSecundaryPort {
   final DataStore store = DataStore();
 
   DataService();
@@ -20,7 +21,7 @@ class DataService implements StockServicePort {
 
   @override
   save(StockDTO dto) {
-    Stock entity = Stock(dto.id, dto.name!, dto.quantity!);
-    store.save(entity);
+    var model = StockModel.fromDTO(dto);
+    store.save(model);
   }
 }

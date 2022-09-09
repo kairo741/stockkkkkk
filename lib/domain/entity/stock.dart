@@ -6,10 +6,10 @@ class Stock {
   Stock(this.id, this.name, this.quantity);
 
   updateStock(int quantity) {
-    if (quantity > 0 || this.quantity <= 0) {
+    if (quantity >= 0) {
       this.quantity = quantity;
     } else {
-      this.quantity = 0;
+      throw Exception("Quantidade menor que 0");
     }
   }
 }

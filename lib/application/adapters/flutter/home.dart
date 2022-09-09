@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
           TextButton(
               onPressed: () {
                 setState(() {
-                  _stockService.save(StockDTO(null, name, 1));
+                  _stockService.save(StockDTO(null, name, 1), 1);
                   Navigator.pop(context);
                 });
               },
@@ -76,12 +76,15 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {
                           setState(
                             () {
-                              data[index].quantity = data[index].quantity! + 1;
-                              _stockService.save(data[index]);
+                              try {
+                                _stockService.save(data[index], data[index].quantity! - 1);
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              }
                             },
                           );
                         },
-                        icon: Icon(Icons.add),
+                        icon: Icon(Icons.remove),
                       ),
                       Text(
                         data[index].quantity.toString(),
@@ -91,18 +94,11 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {
                           setState(
                             () {
-                              if (data[index].quantity! > 0) {
-                                data[index].quantity =
-                                    data[index].quantity! - 1;
-                                _stockService.save(data[index]);
-                              } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
-                              }
+                              _stockService.save(data[index], data[index].quantity! + 1);
                             },
                           );
                         },
-                        icon: Icon(Icons.remove),
+                        icon: Icon(Icons.add),
                       ),
                     ],
                   ),

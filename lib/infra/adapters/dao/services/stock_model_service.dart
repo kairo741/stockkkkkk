@@ -1,16 +1,17 @@
 import 'package:get_it/get_it.dart';
-import 'package:stockkkkkk/domain/entity/stock.dart';
-import 'package:stockkkkkk/domain/port/DAO/stock_dao_port.dart';
+import 'package:stockkkkkk/domain/dto/stockDTO.dart';
+import 'package:stockkkkkk/domain/port/service/primary_port.dart';
+import 'package:stockkkkkk/domain/port/service/secundary_port.dart';
 import 'package:stockkkkkk/infra/adapters/models/stock_model.dart';
 
 import '../interfaces/stock_dao.dart';
 
-class StockModelServiceImpl implements StockDAOPort {
+class StockModelServiceImpl implements ServicePrimaryPort, ServiceSecundaryPort {
   final _dao = GetIt.I.get<StockDAO>();
 
   @override
-  save(Stock stock) async {
-    var model = StockModel.fromStock(stock);
+  save(StockDTO dto) async {
+    var model = StockModel.fromDTO(dto);
     validate(model);
     await _dao.save(model);
   }
@@ -24,10 +25,10 @@ class StockModelServiceImpl implements StockDAOPort {
   }
 
   @override
-  Future<List<Stock>> findAll() async {
+  Future<List<StockDTO>> findAll() async {
     var list = await _dao.findAll();
 
-    var modelList = list.map<Stock>((e) => e.toStock()).toList();
+    var modelList = list.map<StockDTO>((e) => e.toDTO()).toList();
 
     return modelList;
   }

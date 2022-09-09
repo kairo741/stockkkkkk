@@ -1,7 +1,5 @@
 import 'package:stockkkkkk/domain/dto/stockDTO.dart';
 
-abstract class StockServicePort {
+abstract class ServicePrimaryPort {
   Future<List<StockDTO>> findAll();
-
-  save(StockDTO dto) ;
 }

@@ -1,16 +1,13 @@
-import 'package:stockkkkkk/domain/entity/stock.dart';
 import 'package:stockkkkkk/infra/adapters/models/stock_model.dart';
 
 class DataStore {
   final Map<String, StockModel> _store = <String, StockModel>{};
 
-  void save(Stock stock) {
+  void save(StockModel model) {
     // if (_store.containsKey(identifier)) {
     //   throw DataStoreException(
     //       "Identifier already in store! Use the update method!");
     // }
-
-    var model = StockModel.fromStock(stock);
 
     _store[model.id.toString()] = model;
   }
