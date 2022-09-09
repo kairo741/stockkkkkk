@@ -1,5 +1,5 @@
 class Stock {
-  int id;
+  int? id;
   String name;
   int quantity = 0;
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:stockkkkkk/application/adapters/flutter/create.dart';
+
+// import 'package:stockkkkkk/application/adapters/flutter/create.dart';
 import 'package:stockkkkkk/domain/adapters/service/stock_service_impl.dart';
 import 'package:stockkkkkk/domain/dto/stockDTO.dart';
 
@@ -14,35 +15,46 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final StockServiceImpl _stockService = StockServiceImpl();
 
-  var nome;
+  registerPopUp() {
+    var name = "";
 
-  Future cadastrar() => showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('Cadastrar'),
-      content: TextField(
-        onChanged: (value) => nome = value,
-        autofocus: true,
-        decoration: InputDecoration(hintText: 'Informar nome'),
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Cadastrar'),
+        content: TextField(
+          onChanged: (value) => name = value,
+          autofocus: true,
+          decoration: const InputDecoration(hintText: 'Informar nome'),
+        ),
+        actions: [
+          TextButton(
+              onPressed: () {
+                _stockService.save(StockDTO(null, name, 1));
+                Navigator.pop(context);
+              },
+              child: Text('Cadastrar'))
+        ],
       ),
-      actions: [
-        TextButton(onPressed: () {Navigator.pop(context);}, child: Text('Cadastrar'))
-      ],
-    ),
-  );
-
-
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        actions: [IconButton(onPressed:() {cadastrar();}, icon: Icon(Icons.add))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                registerPopUp();
+              },
+              icon: Icon(Icons.add))
+        ],
       ),
       body: Center(
         child: FutureBuilder(
-          future: _stockService.getStock(),
+          future: _stockService.findAll(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (!snapshot.hasData) return const CircularProgressIndicator();
 
@@ -51,7 +63,7 @@ class _HomePageState extends State<HomePage> {
               itemCount: data.length,
               itemBuilder: (context, index) => Card(
                 child: ListTile(
-                  title: Text(data[index].name),
+                  title: Text(data[index].name!),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -60,8 +72,7 @@ class _HomePageState extends State<HomePage> {
                         data[index].quantity.toString(),
                         style: Theme.of(context).textTheme.headline4,
                       ),
-                      const IconButton(
-                          onPressed: null, icon: Icon(Icons.remove))
+                      const IconButton(onPressed: null, icon: Icon(Icons.remove))
                     ],
                   ),
                 ),
@@ -70,7 +81,6 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
-
     );
   }
 }
