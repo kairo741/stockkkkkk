@@ -12,4 +12,14 @@ class StockDTO {
     name = stock.name;
     quantity = stock.quantity;
   }
+
+  @override
+  bool operator ==(Object other) {
+    other = other as StockDTO;
+    if (other.id == id && other.name == name && other.quantity == quantity) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
